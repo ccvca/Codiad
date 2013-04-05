@@ -259,7 +259,7 @@
     //////////////////////////////////////////////////////////////////
 
     codiad.editor = {
-
+    	
         /// Editor instances - One instance corresponds to an editor
         /// pane in the user interface. Different EditSessions
         /// (ace/edit_session)
@@ -277,7 +277,35 @@
             indentGuides: true,
             wrapMode: false
         },
-
+        
+        //fileextension : textmode
+        fileExtensionTextMode:{
+        	html: 'html',
+        	htm: 'html',
+        	tpl: 'html',
+        	js: 'javascript',
+        	css: 'css',
+        	scss: 'scss',
+        	sass: 'scss',
+        	less: 'less',
+        	php: 'php',
+        	php4: 'php',
+        	php5: 'php',
+        	phtml: 'php',
+        	json: 'json',
+        	xml: 'xml',
+        	sql: 'sql',
+        	md: 'markdown',
+        	c: 'c_cpp',
+        	cpp: 'c_cpp',
+        	h: 'c_cpp',
+        	hpp: 'c_cpp',
+        	py: 'python',
+        	rb: 'ruby',
+        	jade: 'jade',
+        	coffee: 'coffee'
+        },
+        
         rootContainer: null,
 
         init: function(){
@@ -487,7 +515,6 @@
 
                 actSession.setMode(newMode);
                 _thisMenu.hide();
-
             });
         },
 
@@ -667,7 +694,7 @@
 
         /////////////////////////////////////////////////////////////////
         //
-        // Select file mode by extension
+        // Select file mode by extension case insensitive
         //
         // Parameters:
         //   e - {String} File extension
@@ -675,50 +702,57 @@
         /////////////////////////////////////////////////////////////////
 
         selectMode: function(e) {
-            switch (e) {
-            case 'html':
-            case 'htm':
-            case 'tpl':
-                return 'html';
-            case 'js':
-                return 'javascript';
-            case 'css':
-                return 'css';
-            case 'scss':
-            case 'sass':
-                return 'scss';
-            case 'less':
-                return 'less';
-            case 'php':
-            case 'php5':
-            case 'phtml':
-                return 'php';
-            case 'json':
-                return 'json';
-            case 'xml':
-                return 'xml';
-            case 'sql':
-                return 'sql';
-            case 'md':
-                return 'markdown';
-            case 'c':
-            case 'cpp':
-            case 'h':
-            case 'hpp':
-                return 'c_cpp';
-            case 'py':
-                return 'python';
-            case 'rb':
-                return 'ruby';
-            case 'jade':
-                return 'jade';
-            case 'coffee':
-                return 'coffee';
-            default:
-                return 'text';
-            }
+        	if(typeof(e) != 'string'){
+        		return 'text';
+        	}
+        	e = e.toLowerCase();
+        	
+        	if(e in this.fileExtensionTextMode){
+        		return this.fileExtensionTextMode[e];
+        	}else{
+        		return 'text';
+        	}
+        },
+        
+        /////////////////////////////////////////////////////////////////
+        //
+        // Add an defined Textmode for an extension
+        //
+        // Parameters:
+        //   extension - {String} File Extension
+        //   mode - {String} TextMode for this extension
+        //
+        /////////////////////////////////////////////////////////////////
+        
+        addFileExtensionTextMode: function(extension, mode){
+        	if(typeof(extension) != 'string' || typeof(mode) != 'string'){
+        		if (console){
+        			console.warn('wrong usage of addFileExtensionTextMode, both parameters need to be string');
+        		}
+        		return;
+        	}
+        	mode = mode.toLowerCase();
+        	this.fileExtensionTextMode[extension] = mode;
         },
 
+        addTextMode: function(mode){
+        	if(typeof(mode) != 'string'){
+        		if (console){
+        			console.warn('wrong usage of addTextMode, both parameter needs to be string');
+        		}
+        		return;
+        	}
+        	
+        	mode = mode.toLowerCase();
+        	
+        	for(var p = 0; p < availableTextModes.length; ++p){
+        		if (mode == availableTextModes[p]){
+        			return; // Mode is already in the List
+        		}
+        	}
+        	availableTextModes.push(mode);
+        },
+        
         /////////////////////////////////////////////////////////////////
         //
         // Set the editor mode
