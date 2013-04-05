@@ -248,7 +248,7 @@
 
             el.css(props);
         }
-    }
+    };
 
     //////////////////////////////////////////////////////////////////
     //
@@ -346,7 +346,7 @@
 
         addInstance: function(session, where) {
             var el = $('<div class="editor">');
-            var chType, chArr = [], sc, chIdx;
+            var chType, chArr = [], sc = null, chIdx = null;
             var _this = this;
 
             if (this.instances.length == 0) {
@@ -382,7 +382,7 @@
             var i = ace.edit(el[0]);
             var resizeEditor = function(){
                 i.resize();
-            }
+            };
 
             if (sc) {
                 i.splitContainer = sc;
@@ -398,7 +398,7 @@
                 if (this.instances.length === 1) {
                     var re = function(){
                         _this.instances[0].resize();
-                    }
+                    };
                     sc.root
                         .on('h-resize', re)
                         .on('v-resize', re);
@@ -456,7 +456,7 @@
                 _this.exterminate();
                 _this.addInstance(s);
                 _splitOptionsMenu.hide();
-            })
+            });
         },
 
         createModeMenu: function(){
@@ -482,7 +482,7 @@
                 var fn = function(){
                    _this.setModeDisplay(actSession);
                    actSession.removeListener('changeMode', fn);
-                }
+                };
                 actSession.on("changeMode", fn);
 
                 actSession.setMode(newMode);
@@ -518,7 +518,7 @@
                 var fn = function(){
                     thisMenu.hide();
                     $(window).off('click', fn);
-                }
+                };
                 $(window).on('click', fn);
             });
         },
