@@ -75,7 +75,7 @@
                     <th width="5">Open</th>
                     <th>Project Name</th>
                     <th>Path</th>
-                    <?php if(!$projects_assigned){ ?><th width="5">Delete</th><?php } ?>
+                    <?php if(checkAccess()){ ?><th width="5">Delete</th><?php } ?>
                 </tr>
             <?php
             
@@ -92,7 +92,7 @@
                     <td><?php echo($data['name']); ?></td>
                     <td>/<?php echo($data['path']); ?></td>
                     <?php
-                        if(!$projects_assigned){
+                        if(checkAccess()){
                             if($_SESSION['project'] == $data['path']){
                             ?>
                             <td><a onclick="codiad.message.error('Active Project Cannot Be Removed');" class="icon-block bigger-icon"></a></td>
@@ -111,7 +111,7 @@
             ?>
             </table>
             </div>
-            <?php if(!$projects_assigned){ ?><button class="btn-left" onclick="codiad.project.create();">New Project</button><?php } ?><button class="<?php if(!$projects_assigned){ echo('btn-right'); } ?>" onclick="codiad.modal.unload();return false;">Close</button>
+            <?php if(checkAccess()){ ?><button class="btn-left" onclick="codiad.project.create();">New Project</button><?php } ?><button class="<?php if(checkAccess()){ echo('btn-right'); } ?>" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             
             break;
@@ -168,6 +168,10 @@
             <input type="hidden" name="project_path" value="/<?php echo($_GET['path']); ?>">
             <label>Confirm Project Deletion</label>
             <pre>Name: <?php echo($_GET['name']); ?>, Path: /<?php echo($_GET['path']); ?></pre>
+            <table>
+            <tr><td width="5"><input type="checkbox" name="delete" id="delete" value="true"></td><td>Delete Project Files</td></tr>
+            <tr><td width="5"><input type="checkbox" name="follow" id="follow" value="true"></td><td>Follow Symbolic Links </td></tr>
+            </table>
             <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.project.list();return false;">Cancel</button>
             <?php
             break;

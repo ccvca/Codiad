@@ -23,7 +23,7 @@
         case 'list':
             
             $projects_assigned = false;
-            if(file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php')){ 
+            if(!checkAccess()){ 
             ?>
             <label>Restricted</label>
             <pre>You can not edit the user list</pre>
@@ -124,7 +124,7 @@
                 ?>
                 </table>
             </div>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
+            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Close</button>
             <?php
             break;
         
